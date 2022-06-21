@@ -34,8 +34,20 @@ class Game{
         //
         
     }
-    removeLife(){
 
+    //lets the user know they won, if the all letters have been displayed before running out of hearts
+    checkForWin(){
+
+    }
+
+    //removes a heart when the user guesses a letter not present in the phrase
+    removeLife(){
+        const hearts = document.querySelectorAll('#scoreboard img')
+        hearts[this.missed].src = 'images/lostHeart.png'
+        this.missed ++ 
+    }
+    gameOver(){
+        
     }
 
     //handles UI logic
@@ -49,10 +61,8 @@ class Game{
                     console.log(letter)
                     this.activePhrase.showMatchedLetter(letter)
                 }else{
-                    //removeLife()
-                    this.missed++ 
-                    const scoreBoard = document.querySelector('#scoreboard li')
-                    console.log(scoreBoard)
+                    this.removeLife()  
+                    //check if 
                 }
                 
             })
