@@ -21,7 +21,7 @@ class Phrase{
             if(/[a-z]/.test(char)){
                 li.setAttribute('class', `hide letter ${char}`)
             }else{
-                li.setAttribute('class', 'hide space')
+                li.setAttribute('class', 'space')
             }
             
             phrase_ul.appendChild(li)
