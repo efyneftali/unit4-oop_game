@@ -14,8 +14,19 @@ startGame_btn.addEventListener('click',(e)=>{
     game.resetGame()
 })
 
+//capute users input via on screen keyboard
 key_Btns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         game.handleInteraction(e)
     })
+})
+
+//capture user input via keypresses 
+document.addEventListener('keypress', (e) => {
+        const key = e.key
+        key_Btns.forEach(btn => {
+            if (e.key === btn.innerHTML){
+                btn.click()
+            }
+        })
 })
