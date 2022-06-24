@@ -37,29 +37,31 @@ class Game{
 
     //check if user won, if the all letters have been displayed before running out of hearts
     checkForWin(){                
-        const letters_li = document.querySelectorAll('.hide, .letter')
-        const letters_arr = [...letters_li]
-        let isWinner = null
-        const letterClasses = [] 
-        letters_li.forEach(li =>{
-            //make arr with class name hide / show
-            letterClasses.push(li.classList[0])
-        })
-        isWinner = letterClasses.includes("hide")
-        return isWinner
+        const letters_li = document.querySelectorAll('.hide')
+        // const letters_arr = [...letters_li]
+        // let isWinner = null
+        // const letterClasses = [] 
+        // letters_li.forEach(li =>{
+        //     //make arr with class name hide / show
+        //     letterClasses.push(li.classList[0])
+        // })
+        // isWinner = letterClasses.includes("hide")
+        //console.log(letters_li)
+        return (letters_li.length === 0)
 
     }
-    gameOver(gameResult){
+    gameOver(){
         const overlay_div = document.querySelector('#overlay')
         const overlay_h1 = document.querySelector('#game-over-message')
         overlay_div.style.display = 'block'
         overlay_div.className=''
-        if (gameResult){
-            overlay_div.className='lose'
-            overlay_h1.innerHTML = "Better luck next time"
-        }else{
+        if (this.checkForWin()){
             overlay_div.className='win'
-            overlay_h1.innerHTML = "Cograts you won!"
+            overlay_h1.innerHTML = "Cograts You Know BTS<3"
+            
+        }else{
+            overlay_div.className='lose'
+            overlay_h1.innerHTML = "You Don't Know BTS :("
         }
     }
 
@@ -68,50 +70,41 @@ class Game{
         const hearts = document.querySelectorAll('#scoreboard img')
         hearts[this.missed].src = 'images/lostHeart.png'
         this.missed ++ 
+        if (this.missed === 5) {
+            this.gameOver();
+        }
     }
     //resets game after winning or losing
     resetGame(){
-        const phrase_ul = document.querySelector("#phrase ul")
+        const overlay_div = document.querySelector('#overlay')
         const hearts = document.querySelectorAll('#scoreboard img')
         const key_Btns = document.querySelectorAll(".key") 
-        phrase_ul.innerHTML = ''
         hearts.forEach(heart=>{
             heart.src = 'images/liveHeart.png'
         })
         key_Btns.forEach(btn => {
             btn.disabled = false
-            btn.classList.remove('chosen','wrong')
+            btn.classList.remove('wrong')
+            btn.classList.remove('chosen')
         })
-
+        overlay_div.classList.remove('win')
+        overlay_div.classList.remove('lose')
     }
 
-    //handles UI logic
-    handleInteraction(){
-        const key_Btns = document.querySelectorAll(".key")        
-        key_Btns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.target.disabled = true
-                const letter = e.target.innerHTML
-                const isPresent = this.activePhrase.checkLetter(letter)
-                if (this.checkForWin()&&this.missed<4){
-                    if(isPresent){
-                        this.activePhrase.showMatchedLetter(letter)
-                        e.target.classList.add("chosen")
-                        if(!this.checkForWin()){
-                            this.gameOver(this.checkForWin())
-                            this.resetGame() 
-                        }
-                    }else{
-                        e.target.classList.add("wrong")
-                        this.removeLife() 
-                    }   
+    //handles UI/Game logic
+    handleInteraction(e){
+        e.target.disabled = true
+        const letter = e.target.innerHTML
+        const isPresent = this.activePhrase.checkLetter(letter)
+            if(isPresent){
+                this.activePhrase.showMatchedLetter(letter)
+                e.target.classList.add("chosen")
+                if(this.checkForWin()){
+                    this.gameOver()
                 }
-                else{
-                    this.gameOver(this.checkForWin())
-                    this.resetGame()
-                }
-            })
-        })  
+            }else{
+                e.target.classList.add("wrong")
+                this.removeLife() 
+            }   
     }
-
 }

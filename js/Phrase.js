@@ -15,6 +15,7 @@ class Phrase{
     // add chr place holders for all chrs in a random phrase
         const phrase_ul = document.querySelector("#phrase ul")
         const phrase_arr = this.phrase.split('')
+        phrase_ul.innerHTML = ''
         phrase_arr.forEach(char => {
             const li = document.createElement("li")
             li.innerHTML = char
